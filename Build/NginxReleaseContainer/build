@@ -1,0 +1,21 @@
+#!/bin/bash 
+
+
+explodeZip(){
+    unzip $PATH_TO_ARTIFACTS/$ARTIFACT_NAME -d /app/staticfilefolder
+}
+buildDockerFile(){
+
+    docker build .  -t $APP_NAME:${BUILD_BUILDNUMBER}   --build-arg STATIC_FILE_FOLDER=staticfilefolder
+}
+
+builder(){
+    echo PATH_TO_ARTIFACTS: $PATH_TO_ARTIFACTS
+    echo ARTIFACT_NAME: $ARTIFACT_NAME
+    echo APPNAME: $APP_NAME
+    echo BUILD_BUILDNUMBER: $BUILD_BUILDNUMBER
+    cd /app
+    explodeZip
+    buildDockerFile
+}
+builder 

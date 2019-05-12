@@ -1,0 +1,7 @@
+FROM microsoft/dotnet:aspnetcore-runtime
+WORKDIR /app
+ARG RELEASE_FOLDER
+COPY $RELEASE_FOLDER/* ./
+COPY boot.sh .
+RUN chmod +x ./boot.sh
+ENTRYPOINT ["./boot.sh"]

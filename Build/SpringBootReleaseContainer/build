@@ -1,0 +1,43 @@
+#!/bin/bash 
+echo on
+
+
+
+replaceAppClassName(){
+    echo $APP_CLASSNAME
+    sed  -i "s/\$appclassname/$APP_CLASSNAME/g" springboot.sh
+
+   cat springboot.sh
+}
+
+
+
+
+buildDockerFile(){
+
+    docker build .  -t $APP_NAME:${BUILD_BUILDNUMBER}   --build-arg ARTIFACT_NAME=$ARTIFACT_NAME
+}
+
+
+
+copyArtifactsToApp(){
+    cp $PATH_TO_ARTIFACTS/$ARTIFACT_NAME .
+
+}
+
+builder(){
+    echo PATH_TO_ARTIFACTS: $PATH_TO_ARTIFACTS
+    echo ARTIFACT_NAME: $ARTIFACT_NAME
+    echo APP_FOLDER: $APP_FOLDER
+    echo APP_CLASSNAME: $APP_CLASSNAME
+    cd /app
+    copyArtifactsToApp
+    replaceAppClassName
+    buildDockerFile
+}
+
+
+
+
+
+builder $*

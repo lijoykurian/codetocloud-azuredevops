@@ -1,0 +1,3 @@
+FROM nginx
+ARG STATIC_FILE_FOLDER
+COPY $STATIC_FILE_FOLDER /usr/share/nginx/html

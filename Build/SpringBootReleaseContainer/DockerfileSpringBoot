@@ -1,0 +1,19 @@
+FROM openjdk:8-jdk-alpine
+VOLUME /tmp
+WORKDIR /app
+
+ARG ARTIFACT_NAME
+
+RUN chmod -R 777 /app
+COPY $ARTIFACT_NAME .
+
+RUN jar xvf $ARTIFACT_NAME 
+
+RUN cp -r /app/BOOT-INF/lib /app/lib
+RUN cp -r /app/BOOT-INF/classes/* /app
+RUN rm -r BOOT-INF
+RUN ls -l /app
+COPY springboot.sh /app
+RUN cat /app/springboot.sh
+RUN chmod +x /app/springboot.sh
+ENTRYPOINT ["/app/springboot.sh"]

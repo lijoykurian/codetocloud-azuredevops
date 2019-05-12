@@ -1,0 +1,26 @@
+#!/bin/bash 
+
+
+explodeZip(){
+    unzip $PATH_TO_ARTIFACTS/$ARTIFACT_NAME -d /app/release
+}
+buildDockerFile(){
+
+    docker build .  -t $APP_NAME:${BUILD_BUILDNUMBER}   --build-arg RELEASE_FOLDER=release
+}
+replaceDLLName(){
+        sed  -i "s/\$dllname/$DLL_NAME/g" boot.sh
+
+}
+
+builder(){
+    echo PATH_TO_ARTIFACTS: $PATH_TO_ARTIFACTS
+    echo ARTIFACT_NAME: $ARTIFACT_NAME
+    echo APPNAME: $APP_NAME
+    echo BUILD_BUILDNUMBER: $BUILD_BUILDNUMBER
+    cd /app
+    explodeZip
+    replaceDLLName
+    buildDockerFile
+}
+builder 
